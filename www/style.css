@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;touch-action:none;-webkit-tap-highlight-color:transparent}
+:root{
+  --c1:#0064ff;--c1g:#0064ff88;
+  --c2:#ffffff;--c2g:#ffffff88;
+  --ce:#ff4500;--ceg:#ff450088;
+  --bg:#0a0a14;
+}
+body{background:var(--bg);color:#fff;font-family:'Orbitron',monospace;height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
+
+/* ── SCREENS ── */
+.screen{width:100%;height:100dvh;display:none;flex-direction:column;align-items:center;justify-content:center}
+.screen.active{display:flex}
+
+/* grid bg */
+.gridbg{position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(rgba(0,100,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,100,255,.05) 1px,transparent 1px);
+  background-size:30px 30px}
+
+/* ── MENU ── */
+#s-menu{gap:4px;position:relative;z-index:1;
+  background:radial-gradient(ellipse at 50% 40%,#1a1a3a 0%,#0a0a14 65%)}
+.logo{font-size:clamp(3.5rem,18vw,7rem);font-weight:900;letter-spacing:.25em;color:#00c8ff;
+  text-shadow:0 0 25px #00c8ff,0 0 60px #00c8ff44;animation:glow 2s ease-in-out infinite;line-height:1}
+.logo-sub{font-size:clamp(.5rem,2.8vw,.8rem);letter-spacing:.55em;color:#0080aa;margin-bottom:clamp(1.5rem,6vh,3rem)}
+@keyframes glow{0%,100%{text-shadow:0 0 25px #00c8ff,0 0 60px #00c8ff44}50%{text-shadow:0 0 40px #00c8ff,0 0 100px #00c8ff77,0 0 6px #fff}}
+
+.menu-btns{display:flex;flex-direction:column;gap:12px;width:min(310px,88vw)}
+.nbtn{padding:14px 20px;border:1.5px solid;border-radius:5px;background:transparent;
+  font-family:'Orbitron',monospace;font-size:clamp(.65rem,3.2vw,.85rem);font-weight:700;
+  letter-spacing:.12em;cursor:pointer;transition:background .15s;text-align:center;width:100%}
+.nbtn:active{opacity:.75}
+.nbtn-b{border-color:var(--c1);color:var(--c1)}
+.nbtn-b:active{background:#0064ff18}
+.nbtn-o{border-color:#ff4500;color:#ff4500}
+.nbtn-o:active{background:#ff450018}
+.nbtn-w{border-color:#ccc;color:#ccc}
+.nbtn-w:active{background:#ffffff10}
+.nbtn-gray{border-color:#444;color:#555}
+.nbtn-gray:active{background:#ffffff08}
+
+/* difficulty select */
+.diff-row{display:flex;gap:8px;justify-content:center;margin-top:4px}
+.diff-btn{padding:8px 14px;border:1px solid #333;border-radius:4px;background:transparent;
+  font-family:'Orbitron',monospace;font-size:clamp(.55rem,2.6vw,.72rem);color:#555;cursor:pointer;transition:all .15s}
+.diff-btn.sel{border-color:var(--c1);color:var(--c1);background:#0064ff10}
+.diff-label{font-size:clamp(.45rem,2.2vw,.6rem);letter-spacing:.25em;color:#333;margin-top:6px;text-align:center}
+
+/* ── GAME ── */
+#s-game{flex-direction:column;background:#000;justify-content:flex-start}
+#hud{width:100%;display:flex;justify-content:space-between;align-items:center;
+  padding:8px 14px;background:#000;border-bottom:1px solid #111;flex-shrink:0;gap:8px}
+.hud-p{font-size:clamp(.55rem,3vw,.8rem);font-weight:700;letter-spacing:.1em;white-space:nowrap}
+.hud-p1{color:var(--c1)}.hud-p2{color:var(--c2)}.hud-center{color:#333;font-size:clamp(.45rem,2.5vw,.65rem);letter-spacing:.2em;text-align:center}
+#canvas-wrap{flex:1;width:100%;display:flex;align-items:center;justify-content:center;overflow:hidden}
+#gc{display:block;image-rendering:pixelated}
+
+/* ── CONTROLS ── */
+#ctrl{width:100%;display:flex;justify-content:space-around;align-items:center;
+  padding:12px 10px 20px;flex-shrink:0;background:#000;border-top:1px solid #111}
+.dpad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:clamp(120px,35vw,160px)}
+.db{width:clamp(40px,11vw,50px);height:clamp(40px,11vw,50px);border-radius:8px;border:1.5px solid;
+  background:rgba(255,255,255,0.03);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;user-select:none;transition:all 0.1s}
+.db:active{background:rgba(255,255,255,0.15);transform:scale(0.92)}
+.dp1 .db{border-color:#0064ff33;color:var(--c1)}.dp1 .db:active{background:#0064ff15}
+.dp2 .db{border-color:#ffffff22;color:#ccc}.dp2 .db:active{background:#ffffff0a}
+.de{visibility:hidden}
+.dlabel{text-align:center;font-size:clamp(.4rem,2vw,.58rem);letter-spacing:.15em;margin-top:4px}
+.dl1{color:#0064ff55}.dl2{color:#ffffff33}
+
+/* pause btn */
+#pause-btn{font-family:'Orbitron',monospace;font-size:clamp(.5rem,2.5vw,.65rem);letter-spacing:.15em;
+  border:1px solid #222;border-radius:4px;background:transparent;color:#333;
+  padding:6px 10px;cursor:pointer}
+#pause-btn:active{background:#ffffff08;color:#555}
+
+/* ── GAME OVER ── */
+#s-gameover{gap:18px;background:radial-gradient(ellipse at 50% 40%,#1a1a3a 0%,#0a0a14 65%);position:relative;z-index:1}
+#go-title{font-size:clamp(1.4rem,9vw,2.8rem);font-weight:900;letter-spacing:.2em;animation:glow 1.5s ease-in-out infinite}
+.go-stat{font-size:clamp(.5rem,2.6vw,.7rem);letter-spacing:.25em;color:#333}
+.go-scores{display:flex;gap:28px;margin:6px 0}
+.gos{text-align:center;font-size:clamp(.55rem,2.8vw,.72rem);letter-spacing:.12em}
+.gos span{display:block;font-size:clamp(1.8rem,9vw,3rem);font-weight:900}
+.gos1{color:var(--c1)}.gos2{color:#ccc}.gose{color:#ff4500}
+
+/* countdown overlay */
+#countdown{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+  pointer-events:none;z-index:50;font-size:clamp(4rem,20vw,8rem);font-weight:900;
+  color:#00c8ff;text-shadow:0 0 40px #00c8ff;opacity:0;transition:opacity .2s}
+#countdown.show{opacity:1}
+
+/* pause overlay */
+#pause-overlay{position:fixed;inset:0;background:#000000cc;display:none;flex-direction:column;
+  align-items:center;justify-content:center;z-index:100;gap:20px}
+#pause-overlay.show{display:flex}
+.po-title{font-size:clamp(1.5rem,8vw,2.5rem);font-weight:900;letter-spacing:.3em;color:#00c8ff;text-shadow:0 0 30px #00c8ff44}

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>NIXX — Neon Edition</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="gridbg"></div>
+<div id="countdown"></div>
+
+<!-- ═══ MENU ═══ -->
+<div id="s-menu" class="screen active">
+  <div class="logo">NIXX</div>
+  <div class="logo-sub">NEON EDITION</div>
+  <div class="menu-btns">
+    <button class="nbtn nbtn-b" onclick="selectMode('pve')">▶ &nbsp;1 JOGADOR (PVE)</button>
+    <button class="nbtn nbtn-o" onclick="selectMode('pvp')">⚔ &nbsp;2 JOGADORES (PVP)</button>
+    <button class="nbtn nbtn-w" onclick="selectMode('coop')">◈ &nbsp;COOP (2 JOGADORES)</button>
+    <button class="nbtn nbtn-gray" onclick="showScreen('s-rules')" style="margin-top:4px">? &nbsp;REGRAS</button>
+  </div>
+  <div class="diff-label" id="diff-show" style="margin-top:18px">DIFICULDADE: NORMAL</div>
+  <div class="diff-row">
+    <button class="diff-btn" onclick="setDiff(1,'FÁCIL')">FÁCIL</button>
+    <button class="diff-btn sel" onclick="setDiff(2,'NORMAL')">NORMAL</button>
+    <button class="diff-btn" onclick="setDiff(3,'DIFÍCIL')">DIFÍCIL</button>
+  </div>
+</div>
+
+<!-- ═══ RULES ═══ -->
+<div id="s-rules" class="screen" style="gap:0;background:radial-gradient(ellipse at 50% 40%,#1a1a3a 0%,#0a0a14 65%);position:relative;z-index:1;padding:30px 24px">
+  <div style="font-size:clamp(1.2rem,7vw,2rem);font-weight:900;letter-spacing:.25em;color:#00c8ff;margin-bottom:20px">REGRAS</div>
+  <div style="max-width:340px;font-size:clamp(.6rem,2.8vw,.78rem);line-height:2;color:#aaa;letter-spacing:.05em;text-align:center">
+    <div style="color:#00c8ff;margin-bottom:8px;font-weight:700;letter-spacing:.2em">OBJETIVO</div>
+    Sobreviva e force os oponentes a colidirem com os rastros de luz.<br><br>
+    <div style="color:#0064ff;margin-bottom:8px;font-weight:700;letter-spacing:.2em">CONTROLES</div>
+    <div style="color:var(--c1)">P1 (AZUL): D-Pad esquerdo</div>
+    <div style="color:#ccc">P2 (BRANCO): D-Pad direito</div><br>
+    <div style="color:#ff4500;margin-bottom:8px;font-weight:700;letter-spacing:.2em">MODOS</div>
+    <b style="color:#aaa">PVE:</b> Sobreviva contra IAs cada vez mais rápidas e agressivas.<br>
+    <b style="color:#aaa">PVP:</b> Duelo mortal entre dois jogadores.<br>
+    <b style="color:#aaa">COOP:</b> Juntos contra ondas de inimigos.
+  </div>
+  <button class="nbtn nbtn-b" style="margin-top:28px;width:min(260px,80vw)" onclick="showScreen('s-menu')">↩ &nbsp;VOLTAR</button>
+</div>
+
+<!-- ═══ GAME ═══ -->
+<div id="s-game" class="screen">
+  <div id="hud">
+    <div class="hud-p hud-p1" id="h1">P1</div>
+    <div class="hud-center" id="hc">NÍVEL 1</div>
+    <div class="hud-p hud-p2" id="h2" style="text-align:right">P2</div>
+  </div>
+  <div id="canvas-wrap"><canvas id="gc"></canvas></div>
+  <div id="ctrl">
+    <div>
+      <div class="dpad dp1">
+        <div class="de"></div>
+        <button type="button" class="db" ontouchstart="d1('U')" onmousedown="d1('U')">▲</button>
+        <div class="de"></div>
+        <button type="button" class="db" ontouchstart="d1('L')" onmousedown="d1('L')">◀</button>
+        <div class="de"></div>
+        <button type="button" class="db" ontouchstart="d1('R')" onmousedown="d1('R')">▶</button>
+        <div class="de"></div>
+        <button type="button" class="db" ontouchstart="d1('D')" onmousedown="d1('D')">▼</button>
+        <div class="de"></div>
+      </div>
+      <div class="dlabel dl1">JOGADOR 1</div>
+    </div>
+    <button id="pause-btn" onclick="togglePause()">⏸ PAUSA</button>
+    <div id="ctrl-p2">
+      <div class="dpad dp2">
+        <div class="de"></div>
+        <button type="button" class="db" ontouchstart="d2('U')" onmousedown="d2('U')">▲</button>
+        <div class="de"></div>
+        <button type="button" class="db" ontouchstart="d2('L')" onmousedown="d2('L')">◀</button>
+        <div class="de"></div>
+        <button type="button" class="db" ontouchstart="d2('R')" onmousedown="d2('R')">▶</button>
+        <div class="de"></div>
+        <button type="button" class="db" ontouchstart="d2('D')" onmousedown="d2('D')">▼</button>
+        <div class="de"></div>
+      </div>
+      <div class="dlabel dl2">JOGADOR 2</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ GAME OVER ═══ -->
+<div id="s-gameover" class="screen">
+  <div id="go-title"></div>
+  <div class="go-stat" id="go-sub"></div>
+  <div class="go-scores" id="go-sc"></div>
+  <button class="nbtn nbtn-b" style="width:min(280px,84vw)" onclick="restartGame()">▶ &nbsp;JOGAR NOVAMENTE</button>
+  <button class="nbtn nbtn-gray" style="width:min(280px,84vw);margin-top:4px" onclick="showScreen('s-menu')">↩ &nbsp;MENU PRINCIPAL</button>
+</div>
+
+<!-- PAUSE OVERLAY -->
+<div id="pause-overlay">
+  <div class="po-title">PAUSADO</div>
+  <button class="nbtn nbtn-b" style="width:200px" onclick="togglePause()">▶ CONTINUAR</button>
+  <button class="nbtn nbtn-gray" style="width:200px;margin-top:4px" onclick="showScreen('s-menu');stopGame()">↩ MENU</button>
+</div>
+
+<script src="game.js"></script>
+</body>
+</html>
